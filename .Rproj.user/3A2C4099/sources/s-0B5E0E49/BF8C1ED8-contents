@@ -1,0 +1,156 @@
+---
+title: "Group Presentation"
+author: 
+  - "Dea Avega Editya"
+  - "Siyi Li"
+  - "Xitong He"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    seal : false
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: inverse
+```{r setup, include=FALSE,warning=FALSE,message=FALSE}
+options(htmltools.dir.version = FALSE)
+library(tidyverse)
+library(ggplot2)
+library(plotly)
+library(lubridate)
+
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_duo_accent(
+  primary_color = "#1381B0",
+  secondary_color = "#3e8cb4",
+  inverse_header_color = "#FFFFFF"
+)
+```
+
+
+# Group Presentation
+
+
+--
+
+
+### Team Members:
+
+- `r icon::fontawesome("grin")` "Dea Avega Editya"
+
+- `r icon::fontawesome("grin-stars")` "Siyi Li"
+
+- `r icon::fontawesome("smile-wink")` "Xitong He"
+---
+
+# Data collection `r icon::fontawesome("database")`
+
+Loading the data from the [dugong](https://github.com/etc5521-2020/assignment-1-dugong) repo:
+
+```{r load-data,warning=FALSE,message=FALSE}
+mortgage_rates <- readr::read_csv(here::here("data/mortgage_rates.csv"))
+state_hpi <-readr::read_csv(here::here("data/state_hpi.csv"))
+
+state_hpi <- state_hpi %>%
+  mutate(date = ymd(year*10000+month*100+1))
+
+nation_hpi <- state_hpi %>%
+  dplyr::select("date","year","month","us_avg") %>%
+  distinct()
+```
+
+---
+
+# Original plot `r icon::fontawesome("thumbs-up")`
+.pull-left[
+```{r plotly,echo=FALSE,message=FALSE,fig.width=6}
+hpi_mort <- ggplot()+
+  geom_line(data=mortgage_rates,
+            aes(x=date, y=fixed_rate_30_yr*10),
+            color = "#A73737",
+            size = 0.8) +
+  geom_line(data=nation_hpi,
+            aes(x=date, y=us_avg),
+            color="#9BCD9B",
+            size = 0.8)+
+  annotate("text", x=as.Date("2012-05-01"), y=110, label="HPI", color = "#9BCD9B", size = 4) +
+  annotate("text", x=as.Date("1987-11-27"), y=175, label="Mortgage Rates", color = "#A73737", size = 4) +
+  scale_y_continuous(sec.axis = sec_axis(~ . *0.1, name = "Mortgage Rates"))+
+  theme_light()+
+  xlim(ymd(19750101), NA) +
+  labs(x="Year", y="US Average HPI") +
+  ggtitle("The Changes between Mortgage rates and HPI")
+
+ggplotly(hpi_mort)
+```
+]
+
+   
+.pull-right[
+- using the `fixed_rate_30_yr` in `mortgage_rates` dataset and `us_avg` in `nation_hpi` dataset to construct the time series line trend via the `geom_line` function 
+
+- different color to distinguish the line trend
+
+- adding the annotation could be easy to understand which one stands for HPI or Mortgage Rates
+
+]
+---
+
+
+# Bad Plot `r icon::fontawesome("frown")`
+
+.pull-left[
+```{r bad, message=FALSE,echo=FALSE}
+ggplot()+
+  geom_smooth(data=mortgage_rates,
+           aes(x=date, y=fixed_rate_30_yr),
+           size = 0.2) +
+  geom_smooth(data=nation_hpi,
+           aes(x=date, y=us_avg),
+           size = 0.2)+
+  theme_bw()+
+  ggtitle("The Changes between Mortgage rates and HPI")+
+  ylab("rate")
+```
+]
+
+.pull-right[
+- only use ``fixed_rate_30_yr` as y value instead of `fixed_rate_30_yr*10`
+
+- remove the `ggploty` function
+
+- remove the `xlim`
+
+- using `geom_smooth` function 
+
+- remove the y axis continuous scale
+
+- remove the color for these two line trend
+
+]
+---
+
+## Disadvantage in bad plot `r icon::fontawesome("times-circle")`
+
+- The size of two values are different, hard to compare how the changes between mortgage rates and hpi.
+
+- The starting date is different in two dataset, removing the `xlim` could make the date variable inconsistency.
+
+- Removing the color and annotation could mislead the mortgage rate and hpi. 
+
+- Using the `geom_smooth` is not appropriate in this case as it aids for in the presence of overplotting.
+
+- Not interactive any more which is not clear for each time line.
+
+---
+
+
+
+
