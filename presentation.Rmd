@@ -51,9 +51,9 @@ style_duo_accent(
 
 # Data collection `r icon::fontawesome("database")`
 
-Loading the data from the [dugong](https://github.com/etc5521-2020/assignment-1-dugong) repo:
+Loading the data from the [dugong](https://github.com/etc5521-2020/assignment-1-dugong) repo
 
-```{r load-data,warning=FALSE,message=FALSE}
+```{r load-data,echo=FALSE,warning=FALSE,message=FALSE}
 mortgage_rates <- readr::read_csv(here::here("data/mortgage_rates.csv"))
 state_hpi <-readr::read_csv(here::here("data/state_hpi.csv"))
 
@@ -63,31 +63,57 @@ state_hpi <- state_hpi %>%
 nation_hpi <- state_hpi %>%
   dplyr::select("date","year","month","us_avg") %>%
   distinct()
+recession_dates <- readr::read_csv(here::here("data/recession_dates.csv")) 
+recession_clean <- recession_dates %>% 
+  mutate(duration_months = substring(duration_months, 3),
+         period_range = substring(period_range, 5),
+         time_since_previous_recession_months = substring(time_since_previous_recession_months, 4),
+         peak_unemploy_ment = substring(peak_unemploy_ment, 5),
+         period_range = case_when(name == "Great Depression" ~ "Aug 1929–Mar 1933",
+                                  name == "Great Recession" ~ "Dec 2007–June 2009",
+                                  name == "COVID-19 recession" ~ "Feb 2020–present",
+                                  TRUE ~ period_range)) %>% 
+mutate(peak_unemploy_ment = recode(peak_unemploy_ment,
+                                   "5.2%[57](1946)" = "5.2%(1946)",
+                                   "17.8%[50]–\n19.0%(1938)[57]" = "17.8%–19.0%(1938)",
+                                   "21.3%(1932)[50]–  24.9%(1933)[51]"= "21.3%(1932)–24.9%(1933)",
+                                   "10.0%(October 2009)[76]" = "10.0%(October 2009)")) 
+recession_dat <- recession_clean  %>% 
+  separate(period_range, into = c("start", "end"), sep = "–") %>% 
+  mutate(start = as.Date(parse_date_time(start, "%b %Y")), 
+         end = as.Date(parse_date_time(end, "%b %Y"))) 
 ```
 
 ---
 
 # Original plot `r icon::fontawesome("thumbs-up")`
 .pull-left[
-```{r plotly,echo=FALSE,message=FALSE,fig.width=6}
-hpi_mort <- ggplot()+
-  geom_line(data=mortgage_rates,
+```{r plotly,echo=FALSE,message=FALSE,warning=FALSE,fig.width=9,fig.height=9}
+hpi_mort <- ggplot()+ 
+  geom_line(data=mortgage_rates, 
             aes(x=date, y=fixed_rate_30_yr*10),
             color = "#A73737",
             size = 0.8) +
-  geom_line(data=nation_hpi,
+  geom_line(data=nation_hpi, 
             aes(x=date, y=us_avg),
-            color="#9BCD9B",
+            color="#9BCD9B", 
             size = 0.8)+
   annotate("text", x=as.Date("2012-05-01"), y=110, label="HPI", color = "#9BCD9B", size = 4) +
   annotate("text", x=as.Date("1987-11-27"), y=175, label="Mortgage Rates", color = "#A73737", size = 4) +
   scale_y_continuous(sec.axis = sec_axis(~ . *0.1, name = "Mortgage Rates"))+
   theme_light()+
   xlim(ymd(19750101), NA) +
-  labs(x="Year", y="US Average HPI") +
-  ggtitle("The Changes between Mortgage rates and HPI")
+  labs(x="Year", y="US Average HPI")
+  
+mortgage_recession <- hpi_mort +
+  geom_rect(data = recession_dat, 
+            aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf), 
+            alpha = 0.25, 
+            fill = "#7AC5CD") +
+  ggtitle("Recession, HPI and Mortgage Rates")+
+  theme_light()
 
-ggplotly(hpi_mort)
+mortgage_recession
 ```
 ]
 
@@ -106,83 +132,64 @@ ggplotly(hpi_mort)
 # Bad Plot `r icon::fontawesome("frown")`
 
 .pull-left[
-```{r bad, message=FALSE,echo=FALSE}
+```{r bad, message=FALSE,echo=FALSE,warning=FALSE}
 ggplot()+
   geom_smooth(data=mortgage_rates,
            aes(x=date, y=fixed_rate_30_yr),size=0.1) +
   geom_smooth(data=nation_hpi,
            aes(x=date, y=us_avg),size=0.1)+
   theme_dark()+
-  ggtitle("The Changes between Mortgage rates and HPI")+
-  ylab("rate")
+  ylab("rate")+
+    geom_rect(data = recession_dat, 
+            aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf),
+            fill = "gray") +
+  ggtitle("Recession, HPI and Mortgage Rates")
 ```
 ]
 
 .pull-right[
 
-- Remove the `ggploty` function.
-
 - Use `fixed_rate_30_yr` for y value instead of `fixed_rate_30_yr*10` to draw the time series line.
 
 - Remove the `xlim` function.
 
+- Remove the scales for continuous y aesthetics in secondary axis.
+
 - Use `geom_smooth` function instead of `geom_line`
-
-- Remove the y axis continuous scale
-
-- Remove the color palette in two line trends
 
 ]
 ---
 # Bad Plot (Cont) `r icon::fontawesome("frown")`
 
 .pull-left[
-```{r bad-cont, message=FALSE,echo=FALSE}
+```{r bad-cont, message=FALSE,echo=FALSE,warning=FALSE}
 ggplot()+
   geom_smooth(data=mortgage_rates,
            aes(x=date, y=fixed_rate_30_yr),size=0.1) +
   geom_smooth(data=nation_hpi,
            aes(x=date, y=us_avg),size=0.1)+
   theme_dark()+
-  ggtitle("The Changes between Mortgage rates and HPI")+
-  ylab("rate")
+  ylab("rate")+
+    geom_rect(data = recession_dat, 
+            aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf),
+            fill = "gray") +
+  ggtitle("Recession, HPI and Mortgage Rates")
 ```
 ]
 
 .pull-right[
+
+- Remove the color palette in two line trends
+
 - Remove the annotation details in mortgage rate and hpi line trends
 
-- Remove the scales for continuous y aesthetics in secondary axis.
-
 - Changed the them background from `theme_light()` to `theme_dark`
+
+- Reduce the size of line width and date rectangles
 ]
----
-## Disadvantage in bad plot `r icon::fontawesome("times-circle")`
 
-- The size of two values are different, hard to compare how the changes between mortgage rates and hpi.
-
-- The starting date is different in two dataset, removing the `xlim` could make the date variable inconsistency.
-
-- Removing the color and annotation could mislead the mortgage rate and hpi. 
-
-- Using the `geom_smooth` is not appropriate in this case as it aids for in the presence of overplotting.
-
-- Not interactive any more which is not clear for each time line.
 
 ---
-
-```{r}
-ggplot()+
-  geom_smooth(data=mortgage_rates,
-           aes(x=date, y=fixed_rate_30_yr)) +
-  geom_smooth(data=nation_hpi,
-           aes(x=date, y=us_avg))+
-  theme_bw()+
-  ggtitle("The Changes between Mortgage rates and HPI")+
-  ylab("rate")
-```
-
-
 ## Disadvantage in bad plot `r icon::fontawesome("times-circle")`
 
 - without the scale(*10), graphs are hard to compare, since the size of the values are different.
