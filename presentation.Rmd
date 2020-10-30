@@ -151,6 +151,26 @@ ggplot()+
 
 ---
 
+```{r}
+ggplot()+
+  geom_smooth(data=mortgage_rates,
+           aes(x=date, y=fixed_rate_30_yr)) +
+  geom_smooth(data=nation_hpi,
+           aes(x=date, y=us_avg))+
+  theme_bw()+
+  ggtitle("The Changes between Mortgage rates and HPI")+
+  ylab("rate")
+```
 
 
+## Disadvantage in bad plot `r icon::fontawesome("times-circle")`
 
+- without the scale(*10), graphs are hard to compare, since the size of the values are different.
+
+- without the color and text, it is not readable. 
+
+- without the size, the width of line is bigger and hard to see the CI. 
+
+- without 'xlim', the datasets start at different time. 
+
+- with 'geom_smooth', miss lots of details
