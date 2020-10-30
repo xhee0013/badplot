@@ -37,11 +37,10 @@ style_duo_accent(
 
 # Group Presentation
 
-
+### Team: Pandorea
 --
 
-
-### Team Members:
+#### Team Members:
 
 - `r icon::fontawesome("grin")` "Dea Avega Editya"
 
@@ -110,33 +109,54 @@ ggplotly(hpi_mort)
 ```{r bad, message=FALSE,echo=FALSE}
 ggplot()+
   geom_smooth(data=mortgage_rates,
-           aes(x=date, y=fixed_rate_30_yr),
-           size = 0.2) +
+           aes(x=date, y=fixed_rate_30_yr),size=0.1) +
   geom_smooth(data=nation_hpi,
-           aes(x=date, y=us_avg),
-           size = 0.2)+
-  theme_bw()+
+           aes(x=date, y=us_avg),size=0.1)+
+  theme_dark()+
   ggtitle("The Changes between Mortgage rates and HPI")+
   ylab("rate")
 ```
 ]
 
 .pull-right[
-- only use ``fixed_rate_30_yr` as y value instead of `fixed_rate_30_yr*10`
 
-- remove the `ggploty` function
+- Remove the `ggploty` function.
 
-- remove the `xlim`
+- Use `fixed_rate_30_yr` for y value instead of `fixed_rate_30_yr*10` to draw the time series line.
 
-- using `geom_smooth` function 
+- Remove the `xlim` function.
 
-- remove the y axis continuous scale
+- Use `geom_smooth` function instead of `geom_line`
 
-- remove the color for these two line trend
+- Remove the y axis continuous scale
+
+- Remove the color palette in two line trends
 
 ]
 ---
+# Bad Plot (Cont) `r icon::fontawesome("frown")`
 
+.pull-left[
+```{r bad-cont, message=FALSE,echo=FALSE}
+ggplot()+
+  geom_smooth(data=mortgage_rates,
+           aes(x=date, y=fixed_rate_30_yr),size=0.1) +
+  geom_smooth(data=nation_hpi,
+           aes(x=date, y=us_avg),size=0.1)+
+  theme_dark()+
+  ggtitle("The Changes between Mortgage rates and HPI")+
+  ylab("rate")
+```
+]
+
+.pull-right[
+- Remove the annotation details in mortgage rate and hpi line trends
+
+- Remove the scales for continuous y aesthetics in secondary axis.
+
+- Changed the them background from `theme_light()` to `theme_dark`
+]
+---
 ## Disadvantage in bad plot `r icon::fontawesome("times-circle")`
 
 - The size of two values are different, hard to compare how the changes between mortgage rates and hpi.
