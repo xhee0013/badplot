@@ -223,5 +223,10 @@ ggplot()+
 -Lots of unrelated duration of the recession in the graph bofore 1970.
 
 
+---
 
+# Conclusion
 
+* Line plot is the best option for time series,  
+* Sizing has no impact when observations are large,  
+* Differentiate colour of 2 variables can ease reader to understand the plot.
