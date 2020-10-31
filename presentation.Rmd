@@ -188,12 +188,20 @@ ggplot()+
 ---
 ## Disadvantage in bad plot `r icon::fontawesome("times-circle")`
 
-- without the scale(*10), graphs are hard to compare, since the size of the values are different.
+- Without the scale(*10), graphs are hard to compare, since the size of the values are different.
 
-- without the color and text, it is not readable. 
+- Without the color and annotation, it is hard to distinguish the two rates. 
 
-- without the size, the width of line is bigger and hard to see the CI. 
+- Without 'xlim', the datasets start at different time. 
 
-- without 'xlim', the datasets start at different time. 
+- Without secondary axis, it is difficult to get the rate of another one because of quite different scales.
 
-- with 'geom_smooth', miss lots of details
+-Reduce the value of 'alpha' in 'geom_rect', the graphs of rates are not continue anymore since the rectangles cover it.
+
+-Reduce the size of point width, the graph doesn't seem that obvious
+
+-Lots of unrelated duration of the recession in the graph bofore 1970.
+
+
+
+
