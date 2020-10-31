@@ -51,7 +51,7 @@ style_duo_accent(
 
 --
 
-# "Make a Plot Bad Again!" `r fa("fist-raised)`
+# "Make a Plot Bad Again!" `r fa("fist-raised")`
 
 ---
 
