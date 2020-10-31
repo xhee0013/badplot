@@ -43,26 +43,32 @@ style_duo_accent(
 
 #### Team Members:
 
-- `r fa("grin")` "Dea Avega Editya"
+- `r fa("grin", fill = "yellow")` "Dea Avega Editya"
 
-- `r fa("grin-stars")` "Siyi Li"
+- `r fa("grin-stars", fill = "yellow")` "Siyi Li"
 
-- `r fa("smile-wink")` "Xitong He"
+- `r fa("smile-wink", fill = "yellow")` "Xitong He"
 
 --
 
-# "Make a Plot Bad Again!" `r fa("fist-raised")`
-
+.center[
+# "Make a Plot Bad Again!" `r fa("fist-raised", fill = "white")`
+]
 ---
 
 # Data collection `r fa("database")`
 
-Loading the data from the [dugong](https://github.com/etc5521-2020/assignment-1-dugong) repo
+Data source: [dugong](https://github.com/etc5521-2020/assignment-1-dugong) repo
 
-```{r load-data,echo=FALSE,warning=FALSE,message=FALSE}
+#### Reading the dataset
+
+```{r load-data,echo=TRUE, eval = TRUE, warning=FALSE,message=FALSE}
 mortgage_rates <- readr::read_csv(here::here("data/mortgage_rates.csv"))
 state_hpi <-readr::read_csv(here::here("data/state_hpi.csv"))
 
+```
+
+```{r , echo = FALSE, eval = TRUE, warning=FALSE,message=FALSE}
 state_hpi <- state_hpi %>%
   mutate(date = ymd(year*10000+month*100+1))
 
@@ -84,20 +90,47 @@ mutate(peak_unemploy_ment = recode(peak_unemploy_ment,
                                    "17.8%[50]–\n19.0%(1938)[57]" = "17.8%–19.0%(1938)",
                                    "21.3%(1932)[50]–  24.9%(1933)[51]"= "21.3%(1932)–24.9%(1933)",
                                    "10.0%(October 2009)[76]" = "10.0%(October 2009)")) 
+```
+
+```{r , echo =FALSE, eval = TRUE, warning=FALSE,message=FALSE}
 recession_dat <- recession_clean  %>% 
   separate(period_range, into = c("start", "end"), sep = "–") %>% 
   mutate(start = as.Date(parse_date_time(start, "%b %Y")), 
          end = as.Date(parse_date_time(end, "%b %Y"))) 
 ```
 
+---
+# A Brief Story about the Original Plot 
 
-# A Brief Story about the Original Plot
-
-## Mortgage Rate vs Housing Price Index Plot
+##### Mortgage Rate vs Housing Price Index Plot 
 
 .pull-left[
-```{r , fig.align= "center", echo=FALSE}
-knitr::include_graphics("dugong.png")
+```{r ori,echo=FALSE,message=FALSE,warning=FALSE,fig.width=9,fig.height=9}
+hpi_mort <- ggplot()+ 
+  geom_line(data=mortgage_rates, 
+            aes(x=date, y=fixed_rate_30_yr*10),
+            color = "#A73737",
+            size = 0.8) +
+  geom_line(data=nation_hpi, 
+            aes(x=date, y=us_avg),
+            color="#9BCD9B", 
+            size = 0.8)+
+  annotate("text", x=as.Date("2012-05-01"), y=110, label="HPI", color = "#9BCD9B", size = 4) +
+  annotate("text", x=as.Date("1987-11-27"), y=175, label="Mortgage Rates", color = "#A73737", size = 4) +
+  scale_y_continuous(sec.axis = sec_axis(~ . *0.1, name = "Mortgage Rates"))+
+  theme_light()+
+  xlim(ymd(19750101), NA) +
+  labs(x="Year", y="US Average HPI")
+  
+mortgage_recession <- hpi_mort +
+  geom_rect(data = recession_dat, 
+            aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf), 
+            alpha = 0.25, 
+            fill = "#7AC5CD") +
+  ggtitle("Recession, HPI and Mortgage Rates")+
+  theme_light()
+
+mortgage_recession
 ```
 ]
 
@@ -106,12 +139,12 @@ knitr::include_graphics("dugong.png")
 * Created by Dugong team
 * Showing movement of mortgage rate (30 year tenor) versus Housing Price Index in United States of America
 * Data covers period from 1971 to 2018 in monthly basis
-* Its purpose is to explain the relationship between these two variables  
+* Its purpose is to explore relationship between these two variables  
 ]
 
 ---
 
-# Technical Details of Original plot `r fa("thumbs-up")`
+# Why is it Great `r fa("thumbs-up", fill = "brown")`
 .pull-left[
 ```{r plotly,echo=FALSE,message=FALSE,warning=FALSE,fig.width=9,fig.height=9}
 hpi_mort <- ggplot()+ 
@@ -142,9 +175,10 @@ mortgage_recession
 ```
 ]
 
-   
 .pull-right[
 - using the `fixed_rate_30_yr` in `mortgage_rates` dataset and `us_avg` in `nation_hpi` dataset to construct the time series line trend via the `geom_line` function 
+
+- have the same starting date 1975/01/01 (by setting xlim for both)
 
 - different color to distinguish the line trend
 
@@ -153,8 +187,7 @@ mortgage_recession
 ]
 ---
 
-
-# Bad Plot `r fa("frown")`
+# Bad Plot `r fa("frown", fill = "red")`
 
 .pull-left[
 ```{r bad, message=FALSE,echo=FALSE,warning=FALSE}
@@ -183,15 +216,15 @@ ggplot()+
 
 ]
 ---
-# Bad Plot (Cont) `r fa("frown")`
+# Bad Plot (Cont) `r fa("frown", fill = "red")`
 
 .pull-left[
 ```{r bad-cont, message=FALSE,echo=FALSE,warning=FALSE}
 ggplot()+
   geom_point(data=mortgage_rates,
-           aes(x=date, y=fixed_rate_30_yr),alpha=0.2,size=0.2) +
+           aes(x=date, y=fixed_rate_30_yr, size= fixed_rate_30_yr),alpha=0.2) +
   geom_point(data=nation_hpi,
-           aes(x=date, y=us_avg),alpha=0.2,size=0.2)+
+           aes(x=date, y=us_avg, size=us_avg),alpha=0.2)+
   theme_bw()+
   ylab("rate")+
     geom_rect(data = recession_dat, 
@@ -206,12 +239,14 @@ ggplot()+
 
 - Remove the annotation details in mortgage rate and hpi line trends
 
-- Reduce the size of point width,transparency and date rectangles
+- Add relative size for both variables
+
+- Reduce transparency and date rectangles
 ]
 
 
 ---
-## Disadvantage in bad plot `r fa("times-circle")`
+## Disadvantage in bad plot `r fa("times-circle", fill = "red")`
 
 - Without the scale(*10), graphs are hard to compare, since the size of the values are different.
 
@@ -221,17 +256,18 @@ ggplot()+
 
 - Without secondary axis, it is difficult to get the rate of another one because of quite different scales.
 
--Reduce the value of 'alpha' in 'geom_rect', the graphs of rates are not continue anymore since the rectangles cover it.
+- Reduce the value of 'alpha' in 'geom_rect', the graphs of rates are not continue anymore since the rectangles cover it.
 
--Reduce the size of point width, the graph doesn't seem that obvious
+- Reduce the size of point width, the graph doesn't seem that obvious
 
--Lots of unrelated duration of the recession in the graph bofore 1970.
+- Lots of unrelated duration of the recession in the graph bofore 1970.
 
 
 ---
 
-# Conclusion
+# Conclusion `r fa("hand-holding-heart", fill = "green")`
 
-* Line plot is the best option for time series,  
-* Add size/scale parameter to the plot has not really obvious (and could be useless) when observations are large,  
+* Line plot is the best option for time series
+* Make variables comparable by using equal scale
+* Add relative size parameter to the plot has not really obvious (and maybe be useless) when observations are large,  
 * Differentiate colour of 2 variables can ease reader to understand the plot.
