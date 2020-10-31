@@ -186,7 +186,26 @@ mortgage_recession
 
 ]
 ---
+.center[
 
+# Let's Make It Ugly!
+
+]
+--
+.center[
+# From Hero to Zero
+]
+--
+.pull-left[
+<img src = "https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png" width = 50%>
+
+]
+
+.pull-right[
+<img src = "https://assets.stickpng.com/images/580b585b2edbce24c47b2a2f.png" width = 50%>
+
+]
+---
 # Bad Plot `r fa("frown", fill = "red")`
 
 .pull-left[
