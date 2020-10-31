@@ -288,8 +288,8 @@ ggplot()+
 ```
 ]
 
-
 .pull-right[
+
 - Without the scale(*10), graphs are hard to compare, since the size of the values are different.
 
 - Without secondary axis,  the information of the rates became incomplete and hard to distinguish.
@@ -300,9 +300,11 @@ ggplot()+
 
 - Reduce the value of 'alpha' in 'geom_rect', the graphs of rates are not continue anymore in visualization since the rectangles and the trends are overlapping.
 
-- Size paramerter is useless and barely noticable.
+- Size parameter is useless and barely noticable.
 
 - Lots of unrelated duration of the recession in the graph bofore 1970.
+
+-Using 'geom_point', after 2000 there is an overplotting since it is difficult to see individual data points in a data visualization. 
 ]
 ---
 
