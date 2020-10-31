@@ -22,6 +22,7 @@ library(tidyverse)
 library(ggplot2)
 library(plotly)
 library(lubridate)
+library(fontawesome)
 
 ```
 
@@ -42,14 +43,14 @@ style_duo_accent(
 
 #### Team Members:
 
-- `r icon::fontawesome("grin")` "Dea Avega Editya"
+- `r fa("grin")` "Dea Avega Editya"
 
-- `r icon::fontawesome("grin-stars")` "Siyi Li"
+- `r fa("grin-stars")` "Siyi Li"
 
-- `r icon::fontawesome("smile-wink")` "Xitong He"
+- `r fa("smile-wink")` "Xitong He"
 ---
 
-# Data collection `r icon::fontawesome("database")`
+# Data collection `r fa("database")`
 
 Loading the data from the [dugong](https://github.com/etc5521-2020/assignment-1-dugong) repo
 
@@ -84,9 +85,28 @@ recession_dat <- recession_clean  %>%
          end = as.Date(parse_date_time(end, "%b %Y"))) 
 ```
 
+
+# A Brief Story about the Original Plot
+
+## Mortgage Rate vs Housing Price Index Plot
+
+.pull-left[
+```{r , fig.align= "center", echo=FALSE}
+knitr::include_graphics("dugong.png")
+```
+]
+
+--
+.pull-right[
+* Created by Dugong team
+* Showing movement of mortgage rate (30 year tenor) versus Housing Price Index in United States of America
+* Data covers period from 1971 to 2018 in monthly basis
+* Its purpose is to explain the relationship between these two variables  
+]
+
 ---
 
-# Original plot `r icon::fontawesome("thumbs-up")`
+# Technical Details of Original plot `r fa("thumbs-up")`
 .pull-left[
 ```{r plotly,echo=FALSE,message=FALSE,warning=FALSE,fig.width=9,fig.height=9}
 hpi_mort <- ggplot()+ 
@@ -129,7 +149,7 @@ mortgage_recession
 ---
 
 
-# Bad Plot `r icon::fontawesome("frown")`
+# Bad Plot `r fa("frown")`
 
 .pull-left[
 ```{r bad, message=FALSE,echo=FALSE,warning=FALSE}
@@ -158,7 +178,7 @@ ggplot()+
 
 ]
 ---
-# Bad Plot (Cont) `r icon::fontawesome("frown")`
+# Bad Plot (Cont) `r fa("frown")`
 
 .pull-left[
 ```{r bad-cont, message=FALSE,echo=FALSE,warning=FALSE}
@@ -186,7 +206,7 @@ ggplot()+
 
 
 ---
-## Disadvantage in bad plot `r icon::fontawesome("times-circle")`
+## Disadvantage in bad plot `r fa("times-circle")`
 
 - Without the scale(*10), graphs are hard to compare, since the size of the values are different.
 
