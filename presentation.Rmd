@@ -137,7 +137,7 @@ mortgage_recession
 --
 .pull-right[
 * Created by Dugong team
-* Showing movement of mortgage rate (30 year tenor) versus Housing Price Index in United States of America
+* Showing movement of mortgage rate (fixed rate 30-year tenor) versus Housing Price Index in United States of America
 * Data covers period from 1971 to 2018 in monthly basis
 * Its purpose is to explore relationship between these two variables  
 ]
@@ -176,9 +176,10 @@ mortgage_recession
 ]
 
 .pull-right[
-- using the `fixed_rate_30_yr` in `mortgage_rates` dataset and `us_avg` in `nation_hpi` dataset to construct the time series line trend via the `geom_line` function 
+- Using line plot to construct the time series via the `geom_line` function 
+- Scaling up mortgage rate (fixed_rate_30_yr) by multiplying it with 10 
 
-- have the same starting date 1975/01/01 (by setting xlim for both)
+- having the same starting date 1975/01/01 (by setting xlim for both)
 
 - different color to distinguish the line trend
 
