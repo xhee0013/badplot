@@ -134,15 +134,14 @@ mortgage_recession
 .pull-left[
 ```{r bad, message=FALSE,echo=FALSE,warning=FALSE}
 ggplot()+
-  geom_smooth(data=mortgage_rates,
-           aes(x=date, y=fixed_rate_30_yr),size=0.1) +
-  geom_smooth(data=nation_hpi,
-           aes(x=date, y=us_avg),size=0.1)+
-  theme_dark()+
+  geom_point(data=mortgage_rates,
+           aes(x=date, y=fixed_rate_30_yr),alpha=0.2,size=0.2) +
+  geom_point(data=nation_hpi,
+           aes(x=date, y=us_avg),alpha=0.2,size=0.2)+
+  theme_bw()+
   ylab("rate")+
     geom_rect(data = recession_dat, 
-            aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf),
-            fill = "gray") +
+            aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf),fill="grey") +
   ggtitle("Recession, HPI and Mortgage Rates")
 ```
 ]
@@ -155,7 +154,7 @@ ggplot()+
 
 - Remove the scales for continuous y aesthetics in secondary axis.
 
-- Use `geom_smooth` function instead of `geom_line`
+- Use `geom_point` function instead of `geom_line`
 
 ]
 ---
@@ -164,28 +163,25 @@ ggplot()+
 .pull-left[
 ```{r bad-cont, message=FALSE,echo=FALSE,warning=FALSE}
 ggplot()+
-  geom_smooth(data=mortgage_rates,
-           aes(x=date, y=fixed_rate_30_yr),size=0.1) +
-  geom_smooth(data=nation_hpi,
-           aes(x=date, y=us_avg),size=0.1)+
-  theme_dark()+
+  geom_point(data=mortgage_rates,
+           aes(x=date, y=fixed_rate_30_yr),alpha=0.2,size=0.2) +
+  geom_point(data=nation_hpi,
+           aes(x=date, y=us_avg),alpha=0.2,size=0.2)+
+  theme_bw()+
   ylab("rate")+
     geom_rect(data = recession_dat, 
-            aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf),
-            fill = "gray") +
+            aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf),fill="grey") +
   ggtitle("Recession, HPI and Mortgage Rates")
 ```
 ]
 
 .pull-right[
 
-- Remove the color palette in two line trends
+- Remove the color palette in two line trends and recession period
 
 - Remove the annotation details in mortgage rate and hpi line trends
 
-- Changed the them background from `theme_light()` to `theme_dark`
-
-- Reduce the size of line width and date rectangles
+- Reduce the size of point width,transparency and date rectangles
 ]
 
 
