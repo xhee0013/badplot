@@ -296,15 +296,15 @@ ggplot()+
 
 - Without the color and annotation, it is hard to read the plot. 
 
-- Without 'xlim', the datasets is started at different time. 
+- Without 'xlim', the datasets are started at different time. 
 
-- Reduce the value of 'alpha' in 'geom_rect', the graphs of rates are not continue anymore in visualization since the rectangles and the trends are overlapping.
-
-- Size parameter is useless and barely noticable.
+- Reduce the value of 'alpha' in 'geom_rect', the graphs of rates are not continuous anymore in visualization since the rectangles and the trends are overlapping.
 
 - Lots of unrelated duration of the recession in the graph bofore 1970.
 
 - Using 'geom_point', after 2000 there is an overplotting since it is difficult to see individual data points in a data visualization. 
+
+- Size parameter is useless and barely noticeable.
 ]
 ---
 
