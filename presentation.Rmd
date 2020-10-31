@@ -273,21 +273,37 @@ image source: qz.com
 ---
 ## Disadvantage in bad plot `r fa("times-circle", fill = "red")`
 
+.pull-left[
+```{r message=FALSE,echo=FALSE,warning=FALSE}
+ggplot()+
+  geom_point(data=mortgage_rates,
+           aes(x=date, y=fixed_rate_30_yr, size= fixed_rate_30_yr),alpha=0.2) +
+  geom_point(data=nation_hpi,
+           aes(x=date, y=us_avg, size=us_avg),alpha=0.2)+
+  theme_bw()+
+  ylab("rate")+
+    geom_rect(data = recession_dat, 
+            aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf),fill="grey") +
+  ggtitle("Recession, HPI and Mortgage Rates")
+```
+]
+
+
+.pull-right[
 - Without the scale(*10), graphs are hard to compare, since the size of the values are different.
 
-- Without the color and annotation, it is hard to distinguish the two rates. 
+- Without secondary axis,  the information of the rates became incomplete and hard to distinguish.
 
-- Without 'xlim', the datasets start at different time. 
+- Without the color and annotation, it is hard to read the plot. 
 
-- Without secondary axis, it is difficult to get the rate of another one because of quite different scales.
+- Without 'xlim', the datasets is started at different time. 
 
-- Reduce the value of 'alpha' in 'geom_rect', the graphs of rates are not continue anymore since the rectangles cover it.
+- Reduce the value of 'alpha' in 'geom_rect', the graphs of rates are not continue anymore in visualization since the rectangles and the trends are overlapping.
 
-- Reduce the size of point width, the graph doesn't seem that obvious
+- Size paramerter is useless and barely noticable.
 
 - Lots of unrelated duration of the recession in the graph bofore 1970.
-
-
+]
 ---
 
 # Conclusion `r fa("hand-holding-heart", fill = "green")`
