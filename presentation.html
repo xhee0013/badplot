@@ -66,7 +66,7 @@ state_hpi &lt;-readr::read_csv(here::here("data/state_hpi.csv"))
 --
 .pull-right[
 * Created by Dugong team
-* Showing movement of mortgage rate (30 year tenor) versus Housing Price Index in United States of America
+* Showing movement of mortgage rate (fixed rate 30-year tenor) versus Housing Price Index in United States of America
 * Data covers period from 1971 to 2018 in monthly basis
 * Its purpose is to explore relationship between these two variables  
 ]
@@ -79,9 +79,10 @@ state_hpi &lt;-readr::read_csv(here::here("data/state_hpi.csv"))
 ]
 
 .pull-right[
-- using the `fixed_rate_30_yr` in `mortgage_rates` dataset and `us_avg` in `nation_hpi` dataset to construct the time series line trend via the `geom_line` function 
+- Using line plot to construct the time series via the `geom_line` function 
+- Scaling up mortgage rate (fixed_rate_30_yr) by multiplying it with 10 
 
-- have the same starting date 1975/01/01 (by setting xlim for both)
+- having the same starting date 1975/01/01 (by setting xlim for both)
 
 - different color to distinguish the line trend
 
@@ -144,7 +145,12 @@ state_hpi &lt;-readr::read_csv(here::here("data/state_hpi.csv"))
 - Reduce transparency and date rectangles
 ]
 
+---
 
+.center[
+&lt;img src = "dugong_comment.png"&gt;  
+image source: qz.com
+]
 ---
 ## Disadvantage in bad plot &lt;svg style="height:0.8em;top:.04em;position:relative;fill:red;" viewBox="0 0 512 512"&gt;&lt;path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"/&gt;&lt;/svg&gt;
 

@@ -264,7 +264,12 @@ ggplot()+
 - Reduce transparency and date rectangles
 ]
 
+---
 
+.center[
+<img src = "dugong_comment.png">  
+image source: qz.com
+]
 ---
 ## Disadvantage in bad plot `r fa("times-circle", fill = "red")`
 
