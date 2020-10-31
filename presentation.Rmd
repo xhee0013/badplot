@@ -304,7 +304,7 @@ ggplot()+
 
 - Lots of unrelated duration of the recession in the graph bofore 1970.
 
--Using 'geom_point', after 2000 there is an overplotting since it is difficult to see individual data points in a data visualization. 
+- Using 'geom_point', after 2000 there is an overplotting since it is difficult to see individual data points in a data visualization. 
 ]
 ---
 
