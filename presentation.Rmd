@@ -48,6 +48,11 @@ style_duo_accent(
 - `r fa("grin-stars")` "Siyi Li"
 
 - `r fa("smile-wink")` "Xitong He"
+
+--
+
+# "Make a Plot Bad Again!" `r fa("fist-raised)`
+
 ---
 
 # Data collection `r fa("database")`
@@ -155,9 +160,9 @@ mortgage_recession
 ```{r bad, message=FALSE,echo=FALSE,warning=FALSE}
 ggplot()+
   geom_point(data=mortgage_rates,
-           aes(x=date, y=fixed_rate_30_yr),alpha=0.2,size=0.2) +
+           aes(x=date, y=fixed_rate_30_yr, size= fixed_rate_30_yr),alpha=0.2) +
   geom_point(data=nation_hpi,
-           aes(x=date, y=us_avg),alpha=0.2,size=0.2)+
+           aes(x=date, y=us_avg, size=us_avg),alpha=0.2)+
   theme_bw()+
   ylab("rate")+
     geom_rect(data = recession_dat, 
@@ -228,5 +233,5 @@ ggplot()+
 # Conclusion
 
 * Line plot is the best option for time series,  
-* Sizing has no impact when observations are large,  
+* Add size/scale parameter to the plot has not really obvious (and could be useless) when observations are large,  
 * Differentiate colour of 2 variables can ease reader to understand the plot.
