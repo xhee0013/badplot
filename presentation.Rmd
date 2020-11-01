@@ -298,6 +298,27 @@ ggplot()+
 
 - Without 'xlim', the datasets are started at different time. 
 
+]
+---
+
+## Disadvantage in bad plot (Cont) `r fa("times-circle", fill = "red")`
+
+.pull-left[
+```{r message=FALSE,echo=FALSE,warning=FALSE}
+ggplot()+
+  geom_point(data=mortgage_rates,
+           aes(x=date, y=fixed_rate_30_yr, size= fixed_rate_30_yr),alpha=0.2) +
+  geom_point(data=nation_hpi,
+           aes(x=date, y=us_avg, size=us_avg),alpha=0.2)+
+  theme_bw()+
+  ylab("rate")+
+    geom_rect(data = recession_dat, 
+            aes(xmin = start, xmax = end, ymin = -Inf, ymax = Inf),fill="grey") +
+  ggtitle("Recession, HPI and Mortgage Rates")
+```
+]
+.pull-right[
+
 - Reduce the value of 'alpha' in 'geom_rect', the graphs of rates are not continuous anymore in visualization since the rectangles and the trends are overlapping.
 
 - Lots of unrelated duration of the recession in the graph bofore 1970.
